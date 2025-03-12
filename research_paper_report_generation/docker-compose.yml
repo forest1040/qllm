@@ -1,0 +1,37 @@
+services:
+  ollama:
+    image: "ollama/ollama"
+    container_name: ollama-server
+    ports:
+      - 11434:11434
+    volumes:
+      - type: bind
+        source: ${OLLAMA_DIR}
+        target: /root/.ollama
+    networks:
+      - report_gen
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+  worker:
+    depends_on:
+      - ollama
+    image: "python:3.9.21-bullseye"
+    environment:
+      PYTHONPATH: /work/python_packages
+    volumes:
+      - type: bind
+        source: ./
+        target: /work
+    networks:
+      - report_gen
+    tty: true
+    working_dir: /work
+
+networks:
+  report_gen:
+    driver: bridge

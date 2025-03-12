@@ -1,0 +1,9 @@
+llama-parse
+llama-index-llms-ollama
+llama-index-embeddings-ollama
+llama-index
+arxiv
+pymupdf4llm
+beautifulsoup4
+requests
+PyYAML

@@ -1,0 +1,25 @@
+phases:
+  - DOWNLOAD
+  - INDEX
+  - SC
+  - REPORT
+scirate: true
+target_date: 2025-03-04
+topics:
+  - quant-ph
+num_papers_per_topic: 3
+# paper_ids:
+#   - "2403.00756"
+#   - "2406.02501"
+outline_file_path: outline.md
+work_dir: results/work1
+max_retry: 1
+llm_model_name: hf.co/rinna/qwen2.5-bakeneko-32b-instruct-gguf:Q8_0
+embedding_model_name: bge-m3
+evaluator_model_name: llama3.3
+ollama_base_url: http://ollama:11434
+evaluator_guideline: The response was generated with the necessary information given as context for the answer. And as a result of reference to that context, the answer should be to the effect of "exists" rather than "does not exist". If the answer is to the effect of "does not exist", then the requirements of this guideline is not met, but it should be noted that it is the context that should be improved, not the answer in particular. If the question is not the sort to be answered with "does it exist or not", then the requirements of this guideline should be determined to have been met.
+section_content_query_instruction: The query should guide the research to gather relevant information for this part of the report. The query should be clear, short and concise. This subsection describes the paper with the same title as the title of this subsection. The query should ask for a brief summary of this paper and its key findings and contributions. The word "query" does not mean SQL query.
+section_content_answer_instruction: Please answer this query in Japanese. However, there is no need to force the translation of nouns. Depending on the situation, consider using the original language as is, or katakana for words that are commonly expressed in katakana. The answer should provide a brief summary of the context related to the query, followed by a specific description of key findings and contributions. If specific experimental results are presented, please introduce them. If specific experimental results are not shown, do not say something like “no specific experimental results” and output as if there were no instructions regarding the experimental results. 
+introduction_instruction: Output in Japanese. Heading is not required. Output only the introduction. There is no need to output the rest of the report.
+conclusion_instruction: Output in Japanese. Heading is not required. Output only the conclusion.
