@@ -54,7 +54,7 @@ cd path/to/qllm/research_paper_report_generation
   - 4.2. 依存パッケージをインストール
 
   ```
-  docker compose exec pip install -t python_packages -r requirements.txt
+  docker compose exec worker pip install -t python_packages -r requirements.txt
   ```
 
   - 4.3. 設定ファイルをコピー
