@@ -121,6 +121,57 @@ docker compose exec worker python main.py
 docker compose down
 ```
 
+## 完成したレポートをRAGFlowにアップロードする
+
+REPORTフェーズの後にRAGFLOWフェーズを実行することで, RAGFlowにレポートをアップロードすることができます.
+
+RAGFLOWフェーズを実行するにあたって, config.ymlへの追加の設定と, Docker Composeの実行コマンドの変更が必要になります.
+
+### config.ymlの追加設定
+
+- `phases`にRAGFLOWを追加します. RAGFLOWフェーズはREPORTフェーズ終了後に実行する必要があります.
+
+```
+phases:
+  - DOWNLOAD
+  - INDEX
+  - SC
+  - REPORT
+  - RAGFLOW
+```
+
+- `ragflow_api_key`を設定します. RAGFlowにログインして, 設定画面(右上のアバター) > API > API KEY > Create new key で新しいAPIキーを作成できるので, この値を設定して下さい.
+- `ragflow_base_url`を設定します. RAGFlowのポートを変更していない場合は`http://ragflow:80`に設定して下さい. ポートを変更している場合はその値に修正して下さい.
+- `ragflow_dataset_id`を設定します. RAGFlowにログインしてアップロードしたい対象のナレッジベースの設定画面に移動(新規作成でも良い)すると, URLに id=xxx のような形でナレッジベースのIDが表示されているので, その値を設定して下さい.
+
+### Docker Composeの実行コマンドの変更
+
+今まで
+
+```
+docker compose hogehoge
+```
+
+だった部分を
+
+```
+docker compose --profile elasticsearch -f docker-compose-ragflow.yml hogehoge
+```
+
+に変更して下さい.
+
+例えば, サービスを起動する際のコマンドは以下のようになります.
+
+```
+docker compose --profile elasticsearch -f docker-compose-ragflow.yml up -d
+```
+
+main.py を実行する際のコマンドは以下のようになります.
+
+```
+docker compose --profile elasticsearch -f docker-compose-ragflow.yml exec worker python main.py
+```
+
 ## プログラムの流れ
 
 このプログラムは DOWNLOAD, INDEX, SC(Section Contents), REPORT の4フェーズから構成されています. それぞれのフェーズ完了時には中間ファイルが作られ, その時点から再開することができます.
@@ -150,6 +201,9 @@ docker compose down
 - section_content_answer_instruction: SCフェーズで内容を生成する際の指示を設定します
 - introduction_instruction: Instructionを生成する際の指示を設定します
 - conclusion_instruction: Conclusionを生成する際の指示を設定します
+- ragflow_api_key: RAGFlowのAPIキーを設定します
+- ragflow_base_url: RAGFlowのURLを設定します
+- ragflow_dataset_id: レポートのアップロード先にするRAGFlowのナレッジベースのIDを指定します
 
 ## アウトラインファイル
 

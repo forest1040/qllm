@@ -3,6 +3,7 @@ phases:
   - INDEX
   - SC
   - REPORT
+  # - RAGFLOW
 scirate: true
 target_date: 2025-03-04
 topics:
@@ -23,3 +24,6 @@ section_content_query_instruction: The query should guide the research to gather
 section_content_answer_instruction: Please answer this query in Japanese. However, there is no need to force the translation of nouns. Depending on the situation, consider using the original language as is, or katakana for words that are commonly expressed in katakana. The answer should provide a brief summary of the context related to the query, followed by a specific description of key findings and contributions. If specific experimental results are presented, please introduce them. If specific experimental results are not shown, do not say something like “no specific experimental results” and output as if there were no instructions regarding the experimental results. 
 introduction_instruction: Output in Japanese. Heading is not required. Output only the introduction. There is no need to output the rest of the report.
 conclusion_instruction: Output in Japanese. Heading is not required. Output only the conclusion.
+ragflow_api_key: ragflow-xxx
+ragflow_base_url: http://ragflow:80
+ragflow_dataset_id: xxx

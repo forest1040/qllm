@@ -21,6 +21,8 @@ from llama_index.llms.ollama import Ollama
 from llama_index.embeddings.ollama import OllamaEmbedding
 import pymupdf4llm
 from scirate import fetch_top_arxiv_paper_ids
+from ragflow_sdk import RAGFlow
+from ragflow import upload_to_ragflow
 
 
 logger = logging.getLogger(__name__)
@@ -373,6 +375,7 @@ class Phase(Enum):
     INDEX = auto()
     SC = auto()
     REPORT = auto()
+    RAGFLOW = auto()
 
 
 class LazyValue:
@@ -438,6 +441,9 @@ def main():
     section_content_answer_instruction = conf['section_content_answer_instruction']
     introduction_instruction = conf['introduction_instruction']
     conclusion_instruction = conf['conclusion_instruction']
+    ragflow_api_key = conf['ragflow_api_key']
+    ragflow_base_url = conf['ragflow_base_url']
+    ragflow_dataset_id = conf['ragflow_dataset_id']
 
     ## init
     pdf_dir = os.path.join(work_dir, 'papers')
@@ -536,6 +542,20 @@ def main():
             result_file_path,
             introduction_instruction,
             conclusion_instruction,
+        )
+        logger.info('done')
+    else:
+        logger.info(f'phase: {phase.name} (skipped)')
+
+
+    ## ragflow
+    phase = Phase.RAGFLOW
+    if phase in phases:
+        logger.info(f'phase: {phase.name}')
+        upload_to_ragflow(
+            RAGFlow(api_key=ragflow_api_key, base_url=ragflow_base_url),
+            ragflow_dataset_id,
+            result_file_path,
         )
         logger.info('done')
     else:

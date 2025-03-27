@@ -20,7 +20,7 @@ services:
   worker:
     depends_on:
       - ollama
-    image: "python:3.9.21-bullseye"
+    image: "python:3.10.16-bullseye"
     environment:
       PYTHONPATH: /work/python_packages
     volumes:

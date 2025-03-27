@@ -1,0 +1,13 @@
+include:
+  - ${RAGFLOW_DIR}/docker/docker-compose.yml
+
+services:
+  worker:
+    extends:
+      file: ./docker-compose.yml
+      service: worker
+    depends_on: !override
+      - ragflow
+      - ollama
+    networks: !override
+      - ragflow
